@@ -21,6 +21,7 @@ option(VISAGE_ENABLE_WIDGETS "Add widgets library" ON)
 option(VISAGE_ENABLE_BACKGROUND_GRAPHICS_THREAD "Offloads graphics rendering to a background thread" OFF)
 option(VISAGE_ENABLE_GRAPHICS_DEBUG_LOGGING "Shows graphics debug log in console in debug mode" OFF)
 option(VISAGE_ADDRESS_SANITIZER "Enable AddressSanitizer" OFF)
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 if (VISAGE_ADDRESS_SANITIZER)
   if (MSVC)
@@ -46,6 +47,8 @@ endif ()
 set(VISAGE_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 include(FetchContent)
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
 include(cmake/compile_flags.cmake)
 include(cmake/testing_framework.cmake)
 
@@ -100,21 +103,88 @@ if (NOT EXISTS ${DUMMY_FILE})
   file(WRITE ${DUMMY_FILE} "")
 endif ()
 
-add_library(visage STATIC
+add_library(visage
   ${DUMMY_FILE}
 )
 
-target_include_directories(visage SYSTEM PUBLIC ${VISAGE_INCLUDE_PATH} ${VISAGE_INCLUDE})
-target_link_libraries(visage PRIVATE
+add_library(visage::visage ALIAS visage)
+
+target_include_directories(visage SYSTEM
+  PUBLIC
+  $<BUILD_INTERFACE:${VISAGE_INCLUDE_PATH}>
+  $<BUILD_INTERFACE:${VISAGE_INCLUDE}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+
+set(VISAGE_PRIVATE_LIBS
   VisageApp
   VisageGraphics
   VisageUtils
   VisageUi
-  VisageWidgets
   VisageWindowing
 )
 
+if (VISAGE_ENABLE_WIDGETS)
+  list(APPEND VISAGE_PRIVATE_LIBS VisageWidgets)
+endif ()
+
+target_link_libraries(visage PRIVATE $<BUILD_INTERFACE:${VISAGE_PRIVATE_LIBS}>)
+
 set_target_properties(visage PROPERTIES FOLDER "visage")
+
+install(
+  TARGETS visage
+  EXPORT visageTargets
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(
+  DIRECTORY
+  ${VISAGE_INCLUDE}/visage
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(
+  DIRECTORY
+  ${CMAKE_CURRENT_SOURCE_DIR}/visage_app
+  ${CMAKE_CURRENT_SOURCE_DIR}/visage_graphics
+  ${CMAKE_CURRENT_SOURCE_DIR}/visage_ui
+  ${CMAKE_CURRENT_SOURCE_DIR}/visage_utils
+  ${CMAKE_CURRENT_SOURCE_DIR}/visage_widgets
+  ${CMAKE_CURRENT_SOURCE_DIR}/visage_windowing
+  ${CMAKE_CURRENT_SOURCE_DIR}/visage_file_embed
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES_MATCHING PATTERN "*.h"
+)
+
+install(
+  EXPORT visageTargets
+  FILE visageTargets.cmake
+  NAMESPACE visage::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/visage
+)
+
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/visageConfigVersion.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+configure_package_config_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/visageConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/visageConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/visage
+)
+
+install(
+  FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/visageConfig.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/visageConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/visage
+)
 
 if (VISAGE_BUILD_EXAMPLES)
   add_subdirectory(examples)
