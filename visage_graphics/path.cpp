@@ -215,6 +215,17 @@ namespace visage {
         float x = parseNumber(path, i);
         float y = parseNumber(path, i);
         commands.moveTo(x, y, relative);
+
+        if (std::isspace(path[i])) {
+          ++i;
+          continue;
+        }
+
+        if (i < path.size() && !std::isalpha(path[i])) {
+          x = parseNumber(path, i);
+          y = parseNumber(path, i);
+          commands.lineTo(x, y, relative);
+        }
       }
       else if (type == 'L') {
         float x = parseNumber(path, i);
