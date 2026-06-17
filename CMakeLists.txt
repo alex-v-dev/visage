@@ -116,7 +116,7 @@ target_include_directories(visage SYSTEM
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-set(VISAGE_LIBS
+set(VISAGE_OBJECT_LIBS
   VisageApp
   VisageGraphics
   VisageUtils
@@ -125,10 +125,12 @@ set(VISAGE_LIBS
 )
 
 if (VISAGE_ENABLE_WIDGETS)
-  list(APPEND VISAGE_PRIVATE_LIBS VisageWidgets)
+  list(APPEND VISAGE_OBJECT_LIBS VisageWidgets)
 endif ()
 
-target_link_libraries(visage PUBLIC $<BUILD_INTERFACE:${VISAGE_LIBS>)
+foreach(LIB ${VISAGE_OBJECT_LIBS})
+  target_sources(visage PRIVATE $<TARGET_OBJECTS:${LIB}>)
+endforeach()
 
 set_target_properties(visage PROPERTIES FOLDER "visage")
 

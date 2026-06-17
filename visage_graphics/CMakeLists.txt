@@ -29,51 +29,8 @@ elseif (UNIX)
   add_definitions(-D_LARGEFILE64_SOURCE)
 endif ()
 
-set(BGFX_BUILD_EXAMPLES OFF CACHE INTERNAL "" FORCE)
-set(BGFX_BUILD_EXAMPLE_COMMON OFF CACHE INTERNAL "" FORCE)
-set(BGFX_BUILD_TOOLS OFF CACHE INTERNAL "" FORCE)
-set(BGFX_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
-set(BGFX_INSTALL OFF CACHE INTERNAL "" FORCE)
-set(BX_AMALGAMATED ON CACHE INTERNAL "" FORCE)
-set(BX_CONFIG_DEBUG OFF CACHE INTERNAL "" FORCE)
-set(BGFX_CONFIG_DEBUG_ANNOTATION ${VISAGE_ENABLE_GRAPHICS_DEBUG_LOGGING} CACHE INTERNAL "" FORCE)
-set(BGFX_AMALGAMATED ON CACHE INTERNAL "" FORCE)
-set(BGFX_CONFIG_MAX_FRAME_BUFFERS 1024 CACHE INTERNAL "" FORCE)
-set(BGFX_CONFIG_MAX_VIEWS 256 CACHE INTERNAL "" FORCE)
-set(BGFX_CONFIG_MAX_DRAW_CALLS 8192 CACHE INTERNAL "" FORCE)
-set(BGFX_WITH_WAYLAND OFF CACHE INTERNAL "" FORCE)
-set(FT_DISABLE_PNG ON CACHE BOOL "" FORCE)
-set(FT_DISABLE_HARFBUZZ ON CACHE BOOL "" FORCE)
-set(FT_DISABLE_BROTLI ON CACHE BOOL "" FORCE)
-set(FT_DISABLE_ZLIB ON CACHE BOOL "" FORCE)
-set(FT_DISABLE_BZIP2 ON CACHE BOOL "" FORCE)
-
-if (VISAGE_ENABLE_GRAPHICS_DEBUG_LOGGING)
-  target_compile_definitions(VisageGraphics PUBLIC VISAGE_GRAPHICS_DEBUG_LOGGING=1)
-endif ()
-
-set(BGFX_CONFIG_MULTITHREADED 0 CACHE INTERNAL "" FORCE)
-if (NOT EMSCRIPTEN AND VISAGE_ENABLE_BACKGROUND_GRAPHICS_THREAD)
-  set(BGFX_CONFIG_MULTITHREADED 1 CACHE INTERNAL "" FORCE)
-  target_compile_definitions(VisageGraphics PUBLIC VISAGE_BACKGROUND_GRAPHICS_THREAD=1)
-endif ()
-
-message(STATUS "VISAGE: Downloading graphics dependencies")
-set(CMAKE_MESSAGE_LOG_LEVEL "ERROR")
-FetchContent_Declare(bgfx GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
-  GIT_SHALLOW TRUE
-  GIT_TAG v1.129.8958-499
-  EXCLUDE_FROM_ALL
-)
-FetchContent_MakeAvailable(bgfx)
-
-FetchContent_Declare(freetype GIT_REPOSITORY https://gitlab.freedesktop.org/freetype/freetype.git
-  GIT_SHALLOW TRUE
-  GIT_TAG VER-2-14-1
-  EXCLUDE_FROM_ALL
-)
-FetchContent_MakeAvailable(freetype)
-set(CMAKE_MESSAGE_LOG_LEVEL "NOTICE")
+option(VISAGE_SYSTEM_BGFX "Use pre-installed bgfx/bx/bimg via find_package instead of FetchContent" OFF)
+option(VISAGE_SYSTEM_FREETYPE "Use pre-installed FreeType via find_package instead of FetchContent" OFF)
 
 if (MSVC)
   set(DISABLE_WARNINGS /W0)
@@ -81,23 +38,102 @@ else ()
   set(DISABLE_WARNINGS -w)
 endif ()
 
-target_compile_options(freetype PRIVATE ${DISABLE_WARNINGS})
-target_compile_options(bgfx PRIVATE ${DISABLE_WARNINGS})
-target_compile_options(bx PRIVATE ${DISABLE_WARNINGS})
-target_compile_definitions(bx PRIVATE BX_CONFIG_EXCEPTION_HANDLING_USE_WINDOWS_SEH=0)
-target_compile_options(bimg_decode PRIVATE ${DISABLE_WARNINGS})
-target_compile_options(bimg_encode PRIVATE ${DISABLE_WARNINGS})
-target_compile_options(bimg PRIVATE ${DISABLE_WARNINGS})
+if (VISAGE_ENABLE_GRAPHICS_DEBUG_LOGGING)
+  target_compile_definitions(VisageGraphics PUBLIC VISAGE_GRAPHICS_DEBUG_LOGGING=1)
+endif ()
+
+set(BGFX_CONFIG_MULTITHREADED 0)
+if (NOT EMSCRIPTEN AND VISAGE_ENABLE_BACKGROUND_GRAPHICS_THREAD)
+  set(BGFX_CONFIG_MULTITHREADED 1)
+  target_compile_definitions(VisageGraphics PUBLIC VISAGE_BACKGROUND_GRAPHICS_THREAD=1)
+endif ()
+
+# --- bgfx / bx / bimg ---
+if (VISAGE_SYSTEM_BGFX)
+  find_package(bgfx REQUIRED)
+  # bgfx.cmake installs targets as bgfx::bgfx, bgfx::bx, bgfx::bimg, bgfx::bimg_decode, bgfx::bimg_encode
+  set(BGFX_LINK_TARGETS bgfx::bgfx bgfx::bx bgfx::bimg bgfx::bimg_decode bgfx::bimg_encode)
+else ()
+  set(BGFX_BUILD_EXAMPLES OFF CACHE INTERNAL "" FORCE)
+  set(BGFX_BUILD_EXAMPLE_COMMON OFF CACHE INTERNAL "" FORCE)
+  set(BGFX_BUILD_TOOLS OFF CACHE INTERNAL "" FORCE)
+  set(BGFX_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
+  set(BGFX_INSTALL OFF CACHE INTERNAL "" FORCE)
+  set(BX_AMALGAMATED ON CACHE INTERNAL "" FORCE)
+  set(BX_CONFIG_DEBUG OFF CACHE INTERNAL "" FORCE)
+  set(BGFX_CONFIG_DEBUG_ANNOTATION ${VISAGE_ENABLE_GRAPHICS_DEBUG_LOGGING} CACHE INTERNAL "" FORCE)
+  set(BGFX_AMALGAMATED ON CACHE INTERNAL "" FORCE)
+  set(BGFX_CONFIG_MAX_FRAME_BUFFERS 1024 CACHE INTERNAL "" FORCE)
+  set(BGFX_CONFIG_MAX_VIEWS 256 CACHE INTERNAL "" FORCE)
+  set(BGFX_CONFIG_MAX_DRAW_CALLS 8192 CACHE INTERNAL "" FORCE)
+  set(BGFX_WITH_WAYLAND OFF CACHE INTERNAL "" FORCE)
+  set(BGFX_CONFIG_MULTITHREADED ${BGFX_CONFIG_MULTITHREADED} CACHE INTERNAL "" FORCE)
+
+  message(STATUS "VISAGE: Downloading bgfx")
+  set(CMAKE_MESSAGE_LOG_LEVEL "ERROR")
+  FetchContent_Declare(bgfx GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
+    GIT_SHALLOW TRUE
+    GIT_TAG v1.129.8958-499
+    EXCLUDE_FROM_ALL
+  )
+  FetchContent_MakeAvailable(bgfx)
+  set(CMAKE_MESSAGE_LOG_LEVEL "NOTICE")
+
+  target_compile_options(bgfx PRIVATE ${DISABLE_WARNINGS})
+  target_compile_options(bx PRIVATE ${DISABLE_WARNINGS})
+  target_compile_definitions(bx PRIVATE BX_CONFIG_EXCEPTION_HANDLING_USE_WINDOWS_SEH=0)
+  target_compile_options(bimg_decode PRIVATE ${DISABLE_WARNINGS})
+  target_compile_options(bimg_encode PRIVATE ${DISABLE_WARNINGS})
+  target_compile_options(bimg PRIVATE ${DISABLE_WARNINGS})
+
+  set_target_properties(bgfx PROPERTIES FOLDER "visage/third_party/bgfx")
+  set_target_properties(bx PROPERTIES FOLDER "visage/third_party/bgfx")
+  set_target_properties(bimg PROPERTIES FOLDER "visage/third_party/bgfx")
+  set_target_properties(bimg_decode PROPERTIES FOLDER "visage/third_party/bgfx")
+  set_target_properties(bimg_encode PROPERTIES FOLDER "visage/third_party/bgfx")
+
+  set(BGFX_LINK_TARGETS bgfx bx bimg_decode bimg_encode bimg)
+  set(BGFX_PRIVATE_INCLUDES
+    ${BGFX_DIR}/include
+    ${BGFX_DIR}/3rdparty
+    ${BX_DIR}/include
+    ${BIMG_DIR}/include
+  )
+endif ()
+
+# --- FreeType ---
+if (VISAGE_SYSTEM_FREETYPE)
+  find_package(Freetype REQUIRED)
+  set(FREETYPE_LINK_TARGET Freetype::Freetype)
+else ()
+  set(FT_DISABLE_PNG ON CACHE BOOL "" FORCE)
+  set(FT_DISABLE_HARFBUZZ ON CACHE BOOL "" FORCE)
+  set(FT_DISABLE_BROTLI ON CACHE BOOL "" FORCE)
+  set(FT_DISABLE_ZLIB ON CACHE BOOL "" FORCE)
+  set(FT_DISABLE_BZIP2 ON CACHE BOOL "" FORCE)
+
+  message(STATUS "VISAGE: Downloading FreeType")
+  set(CMAKE_MESSAGE_LOG_LEVEL "ERROR")
+  FetchContent_Declare(freetype GIT_REPOSITORY https://gitlab.freedesktop.org/freetype/freetype.git
+    GIT_SHALLOW TRUE
+    GIT_TAG VER-2-14-1
+    EXCLUDE_FROM_ALL
+  )
+  FetchContent_MakeAvailable(freetype)
+  set(CMAKE_MESSAGE_LOG_LEVEL "NOTICE")
+
+  target_compile_options(freetype PRIVATE ${DISABLE_WARNINGS})
+  set_target_properties(freetype PROPERTIES FOLDER "visage/third_party")
+
+  set(FREETYPE_LINK_TARGET freetype)
+  set(FREETYPE_PRIVATE_INCLUDES ${freetype_SOURCE_DIR}/include)
+endif ()
 
 target_link_libraries(
   VisageGraphics
   PRIVATE
-  bx
-  bgfx
-  bx
-  bimg_decode
-  bimg_encode
-  freetype
+  ${BGFX_LINK_TARGETS}
+  ${FREETYPE_LINK_TARGET}
   ${WIN_LIBS}
   ${METAL_LIBS}
   ${FONTCONFIG_LIBRARIES}
@@ -108,12 +144,9 @@ include(embedded.cmake)
 target_include_directories(VisageGraphics
   PRIVATE
   ${VISAGE_INCLUDE_PATH}
-  ${freetype_SOURCE_DIR}/include
-  ${BGFX_DIR}/include
-  ${BGFX_DIR}/3rdparty
-  ${BX_DIR}/include
-  ${BIMG_DIR}/include
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${BGFX_PRIVATE_INCLUDES}
+  ${FREETYPE_PRIVATE_INCLUDES}
 )
 
 if(WIN32)
@@ -135,17 +168,11 @@ target_include_directories(VisageGraphics
 )
 
 set_target_properties(VisageGraphics PROPERTIES FOLDER "visage")
-set_target_properties(bgfx PROPERTIES FOLDER "visage/third_party/bgfx")
-set_target_properties(bx PROPERTIES FOLDER "visage/third_party/bgfx")
-set_target_properties(bimg PROPERTIES FOLDER "visage/third_party/bgfx")
-set_target_properties(bimg_decode PROPERTIES FOLDER "visage/third_party/bgfx")
-set_target_properties(bimg_encode PROPERTIES FOLDER "visage/third_party/bgfx")
 
 visage_add_test_target(
   TARGET VisageGraphicsTests
   TEST_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
-set_target_properties(freetype PROPERTIES FOLDER "visage/third_party")
 
 if (APPLE)
   target_compile_options(VisageGraphics PRIVATE -fobjc-arc)
