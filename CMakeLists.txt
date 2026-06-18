@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 
 if (APPLE AND NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET)
   set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum macOS deployment version")
@@ -38,11 +39,14 @@ set(VISAGE_APPLICATION_NAME ${CMAKE_PROJECT_NAME} CACHE STRING "Application name
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   option(VISAGE_BUILD_EXAMPLES "Build examples" ON)
   option(VISAGE_BUILD_TESTS "Build tests" ON)
-  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 else ()
   option(VISAGE_BUILD_EXAMPLES "Build examples" OFF)
   option(VISAGE_BUILD_TESTS "Build tests" OFF)
 endif ()
+
+# Object/module libraries are linked into the visage library (which may be
+# shared), so they must always be compiled as position-independent code.
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(VISAGE_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -90,6 +94,27 @@ function(amalgamate_sources GENERATED_FILES AMALGAMATED_SOURCE_BASE FILE_SOURCES
   file(CONFIGURE OUTPUT "${AMALGAMATED_SOURCE_BASE}${PART}.cpp" CONTENT "${FILE_CONTENTS}")
 endfunction()
 
+# Copy the shared libraries an executable depends on (visage.dll and, behind it,
+# bgfx.dll / freetype.dll) next to the executable so it can be launched and run
+# directly from the build tree. No-op on non-Windows / static builds.
+function(visage_copy_runtime_dlls TARGET)
+  if (NOT WIN32)
+    return ()
+  endif ()
+
+  set(DLL_SETS "$<TARGET_RUNTIME_DLLS:${TARGET}>")
+  if (TARGET visage AND BUILD_SHARED_LIBS)
+    # visage links bgfx/freetype privately, so their DLLs are not in the
+    # executable's own runtime closure; pull them in explicitly.
+    list(APPEND DLL_SETS "$<TARGET_RUNTIME_DLLS:visage>")
+  endif ()
+
+  add_custom_command(TARGET ${TARGET} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DLL_SETS} "$<TARGET_FILE_DIR:${TARGET}>"
+    COMMAND_EXPAND_LISTS
+  )
+endfunction()
+
 add_subdirectory(visage_file_embed)
 add_subdirectory(visage_graphics)
 add_subdirectory(visage_ui)
@@ -129,10 +154,14 @@ if (VISAGE_ENABLE_WIDGETS)
 endif ()
 
 foreach(LIB ${VISAGE_OBJECT_LIBS})
-  target_sources(visage PRIVATE $<TARGET_OBJECTS:${LIB}>)
+  target_link_libraries(visage PRIVATE ${LIB})
 endforeach()
 
 set_target_properties(visage PROPERTIES FOLDER "visage")
+
+# When built as a shared library on Windows, auto-export all symbols so the
+# whole visage API is available to consumers without annotating every class.
+set_target_properties(visage PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 install(
   TARGETS visage

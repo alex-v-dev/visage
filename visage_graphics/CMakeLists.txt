@@ -50,9 +50,27 @@ endif ()
 
 # --- bgfx / bx / bimg ---
 if (VISAGE_SYSTEM_BGFX)
-  find_package(bgfx REQUIRED)
-  # bgfx.cmake installs targets as bgfx::bgfx, bgfx::bx, bgfx::bimg, bgfx::bimg_decode, bgfx::bimg_encode
-  set(BGFX_LINK_TARGETS bgfx::bgfx bgfx::bx bgfx::bimg bgfx::bimg_decode bgfx::bimg_encode)
+  find_package(bgfx REQUIRED CONFIG)
+  set(BGFX_LINK_TARGETS bgfx::bgfx bgfx::bx bgfx::bimg)
+
+  # visage decodes images (bimg::imageParse) and writes PNGs (bimg::imageWritePng),
+  # which live in bimg_decode / bimg_encode. Link them when the bgfx package ships
+  # them (bgfx.cmake only installs these alongside a SHARED bgfx if patched to).
+  foreach (BIMG_EXTRA bgfx::bimg_decode bgfx::bimg_encode)
+    if (TARGET ${BIMG_EXTRA})
+      list(APPEND BGFX_LINK_TARGETS ${BIMG_EXTRA})
+    endif ()
+  endforeach ()
+
+  FetchContent_Declare(stb
+    URL https://github.com/nothings/stb/archive/refs/heads/master.zip
+    SOURCE_DIR "${CMAKE_BINARY_DIR}/_deps/stb"
+  )
+  FetchContent_MakeAvailable(stb)
+
+  set(BGFX_PRIVATE_INCLUDES
+    ${CMAKE_BINARY_DIR}/_deps
+  )
 else ()
   set(BGFX_BUILD_EXAMPLES OFF CACHE INTERNAL "" FORCE)
   set(BGFX_BUILD_EXAMPLE_COMMON OFF CACHE INTERNAL "" FORCE)
@@ -103,7 +121,7 @@ endif ()
 
 # --- FreeType ---
 if (VISAGE_SYSTEM_FREETYPE)
-  find_package(Freetype REQUIRED)
+  find_package(Freetype REQUIRED CONFIG)
   set(FREETYPE_LINK_TARGET Freetype::Freetype)
 else ()
   set(FT_DISABLE_PNG ON CACHE BOOL "" FORCE)
@@ -131,9 +149,10 @@ endif ()
 
 target_link_libraries(
   VisageGraphics
-  PRIVATE
+  PUBLIC
   ${BGFX_LINK_TARGETS}
   ${FREETYPE_LINK_TARGET}
+  PRIVATE
   ${WIN_LIBS}
   ${METAL_LIBS}
   ${FONTCONFIG_LIBRARIES}
