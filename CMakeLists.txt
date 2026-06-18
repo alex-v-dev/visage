@@ -123,15 +123,12 @@ add_subdirectory(visage_widgets)
 add_subdirectory(visage_windowing)
 add_subdirectory(visage_app)
 
-set(DUMMY_FILE ${CMAKE_CURRENT_BINARY_DIR}/dummy.cpp)
-if (NOT EXISTS ${DUMMY_FILE})
-  file(WRITE ${DUMMY_FILE} "")
-endif ()
+# set(DUMMY_FILE ${CMAKE_CURRENT_BINARY_DIR}/dummy.cpp)
+# if (NOT EXISTS ${DUMMY_FILE})
+#   file(WRITE ${DUMMY_FILE} "")
+# endif ()
 
-add_library(visage
-  ${DUMMY_FILE}
-)
-
+add_library(visage)
 add_library(visage::visage ALIAS visage)
 
 target_include_directories(visage SYSTEM
@@ -153,6 +150,24 @@ if (VISAGE_ENABLE_WIDGETS)
   list(APPEND VISAGE_OBJECT_LIBS VisageWidgets)
 endif ()
 
+# foreach(LIB ${VISAGE_OBJECT_LIBS})
+#   target_link_libraries(visage PRIVATE ${LIB})
+# endforeach()
+
+# 1. Merge the object files directly into visage
+target_sources(visage PRIVATE
+  $<TARGET_OBJECTS:VisageApp>
+  $<TARGET_OBJECTS:VisageGraphics>
+  $<TARGET_OBJECTS:VisageUtils>
+  $<TARGET_OBJECTS:VisageUi>
+  $<TARGET_OBJECTS:VisageWindowing>
+)
+
+if (VISAGE_ENABLE_WIDGETS)
+  target_sources(visage PRIVATE $<TARGET_OBJECTS:VisageWidgets>)
+endif ()
+
+# 2. Link their requirements (like include paths or dependencies)
 foreach(LIB ${VISAGE_OBJECT_LIBS})
   target_link_libraries(visage PRIVATE ${LIB})
 endforeach()
