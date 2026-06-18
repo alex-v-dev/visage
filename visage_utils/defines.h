@@ -104,3 +104,16 @@ namespace visage {
 #else
 #define VISAGE_STDCALL
 #endif
+
+// CMake's WINDOWS_EXPORT_ALL_SYMBOLS only auto-exports functions, not data
+// symbols, so static theme data members (ColorId/ValueId) need explicit
+// dllexport/dllimport when built as a shared library on Windows.
+#if VISAGE_WINDOWS && defined(VISAGE_BUILD_SHARED)
+#if defined(VISAGE_BUILDING_DLL)
+#define VISAGE_EXPORT __declspec(dllexport)
+#else
+#define VISAGE_EXPORT __declspec(dllimport)
+#endif
+#else
+#define VISAGE_EXPORT
+#endif

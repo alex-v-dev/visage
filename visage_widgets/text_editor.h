@@ -26,7 +26,7 @@
 #include "visage_ui/scroll_bar.h"
 
 namespace visage {
-  class TextEditor : public ScrollableFrame {
+  class VISAGE_EXPORT TextEditor : public ScrollableFrame {
   public:
     static constexpr int kDefaultPasswordCharacter = '*';
     static constexpr int kMaxUndoHistory = 1000;

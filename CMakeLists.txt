@@ -150,6 +150,12 @@ if (VISAGE_ENABLE_WIDGETS)
   list(APPEND VISAGE_OBJECT_LIBS VisageWidgets)
 endif ()
 
+if (BUILD_SHARED_LIBS)
+  foreach (LIB ${VISAGE_OBJECT_LIBS})
+    target_compile_definitions(${LIB} PRIVATE VISAGE_BUILDING_DLL)
+  endforeach ()
+endif ()
+
 # foreach(LIB ${VISAGE_OBJECT_LIBS})
 #   target_link_libraries(visage PRIVATE ${LIB})
 # endforeach()

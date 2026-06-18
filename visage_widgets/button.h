@@ -79,7 +79,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(Button)
   };
 
-  class UiButton : public Button {
+  class VISAGE_EXPORT UiButton : public Button {
   public:
     VISAGE_THEME_DEFINE_COLOR(UiButtonBackground);
     VISAGE_THEME_DEFINE_COLOR(UiButtonBackgroundHover);
@@ -188,7 +188,7 @@ namespace visage {
 
   class ButtonChangeAction;
 
-  class ToggleButton : public Button {
+  class VISAGE_EXPORT ToggleButton : public Button {
   public:
     VISAGE_THEME_DEFINE_COLOR(ToggleButtonDisabled);
     VISAGE_THEME_DEFINE_COLOR(ToggleButtonOff);

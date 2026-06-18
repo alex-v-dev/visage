@@ -37,8 +37,8 @@ namespace visage {
   class Gradient {
   public:
     static constexpr int kMaxGradientResolution = 512;
-    static Gradient kViridis;
-    static Gradient kMagma;
+    static VISAGE_EXPORT Gradient kViridis;
+    static VISAGE_EXPORT Gradient kMagma;
 
     static int compare(const Gradient& a, const Gradient& b) {
       if (a.numColors() < b.numColors())

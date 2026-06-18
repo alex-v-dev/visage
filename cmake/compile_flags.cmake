@@ -14,6 +14,13 @@ elseif (UNIX)
   add_compile_options(-DVISAGE_LINUX=1)
 endif()
 
+# Lets headers know that data symbols (e.g. theme ColorId/ValueId statics)
+# need __declspec(dllexport)/dllimport since CMake's WINDOWS_EXPORT_ALL_SYMBOLS
+# only auto-exports functions.
+if (WIN32 AND BUILD_SHARED_LIBS)
+  add_compile_definitions(VISAGE_BUILD_SHARED)
+endif()
+
 if (MSVC)
   add_compile_options(/MP /wd4244 /wd4267 /JMC)
 else()
