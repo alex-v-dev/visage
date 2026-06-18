@@ -103,9 +103,14 @@ function(visage_copy_runtime_dlls TARGET)
   endif ()
 
   set(DLL_SETS "$<TARGET_RUNTIME_DLLS:${TARGET}>")
-  if (TARGET visage AND BUILD_SHARED_LIBS)
+  if (BUILD_SHARED_LIBS)
     # visage links bgfx/freetype privately, so their DLLs are not in the
-    # executable's own runtime closure; pull them in explicitly.
+    # executable's own runtime closure; pull them in explicitly. Module
+    # test targets call this before `visage` is declared at the top level,
+    # so we can't gate on `TARGET visage` here - it would always be false.
+    # The generator expression itself only resolves at generate time, once
+    # the whole project (including the visage target) is known, so this is
+    # safe even though the target doesn't exist yet at this point.
     list(APPEND DLL_SETS "$<TARGET_RUNTIME_DLLS:visage>")
   endif ()
 

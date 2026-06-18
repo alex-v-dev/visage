@@ -330,7 +330,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(GradientAtlas)
   };
 
-  struct GradientPosition {
+  struct VISAGE_EXPORT GradientPosition {
     enum class InterpolationShape {
       Solid,
       Horizontal,

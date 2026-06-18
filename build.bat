@@ -12,7 +12,7 @@ cmake -B build ^
   -D CMAKE_PREFIX_PATH=%INSTALL_DIR% ^
   -D BUILD_SHARED_LIBS=ON ^
   -D VISAGE_BUILD_EXAMPLES=ON ^
-  -D VISAGE_BUILD_TESTS=OFF ^
+  -D VISAGE_BUILD_TESTS=ON ^
   -D VISAGE_SYSTEM_BGFX=ON ^
   -D VISAGE_SYSTEM_FREETYPE=ON ^
   -D bgfx_DIR=Z:\avDependencies-msvc2022-reldeb-shared\BGFX\lib\cmake\bgfx ^
