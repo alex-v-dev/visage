@@ -161,10 +161,6 @@ if (BUILD_SHARED_LIBS)
   endforeach ()
 endif ()
 
-# foreach(LIB ${VISAGE_OBJECT_LIBS})
-#   target_link_libraries(visage PRIVATE ${LIB})
-# endforeach()
-
 # 1. Merge the object files directly into visage
 target_sources(visage PRIVATE
   $<TARGET_OBJECTS:VisageApp>
@@ -172,16 +168,27 @@ target_sources(visage PRIVATE
   $<TARGET_OBJECTS:VisageUtils>
   $<TARGET_OBJECTS:VisageUi>
   $<TARGET_OBJECTS:VisageWindowing>
+  $<TARGET_OBJECTS:VisageEmbeddedShaders>
+  $<TARGET_OBJECTS:VisageEmbeddedFonts>
+  $<TARGET_OBJECTS:VisageEmbeddedIcons>
 )
 
 if (VISAGE_ENABLE_WIDGETS)
   target_sources(visage PRIVATE $<TARGET_OBJECTS:VisageWidgets>)
 endif ()
 
-# 2. Link their requirements (like include paths or dependencies)
-foreach(LIB ${VISAGE_OBJECT_LIBS})
-  target_link_libraries(visage PRIVATE ${LIB})
-endforeach()
+# 2. Link the real external/system requirements of the merged object
+# libraries. The object libraries themselves must not be linked in here:
+# their compiled objects are already merged above, and linking the targets
+# too would pull them into visage's INTERFACE_LINK_LIBRARIES, which
+# install(EXPORT) rejects since none of them belong to an export set.
+target_link_libraries(visage
+  PUBLIC
+  ${VISAGE_GRAPHICS_PUBLIC_LIBS}
+  PRIVATE
+  ${VISAGE_GRAPHICS_PRIVATE_LIBS}
+  ${VISAGE_WINDOWING_PRIVATE_LIBS}
+)
 
 set_target_properties(visage PROPERTIES FOLDER "visage")
 

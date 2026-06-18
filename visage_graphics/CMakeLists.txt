@@ -62,6 +62,16 @@ if (VISAGE_SYSTEM_BGFX)
     endif ()
   endforeach ()
 
+  # find_package() imports targets only into this directory's scope by
+  # default. visage links these from the top-level CMakeLists.txt too, so
+  # promote them to global visibility.
+  foreach (BGFX_TARGET ${BGFX_LINK_TARGETS})
+    get_target_property(BGFX_TARGET_IS_GLOBAL ${BGFX_TARGET} IMPORTED_GLOBAL)
+    if (NOT BGFX_TARGET_IS_GLOBAL)
+      set_target_properties(${BGFX_TARGET} PROPERTIES IMPORTED_GLOBAL TRUE)
+    endif ()
+  endforeach ()
+
   FetchContent_Declare(stb
     URL https://github.com/nothings/stb/archive/refs/heads/master.zip
     SOURCE_DIR "${CMAKE_BINARY_DIR}/_deps/stb"
@@ -123,6 +133,13 @@ endif ()
 if (VISAGE_SYSTEM_FREETYPE)
   find_package(Freetype REQUIRED CONFIG)
   set(FREETYPE_LINK_TARGET Freetype::Freetype)
+
+  # Promote to global visibility so the top-level CMakeLists.txt can also
+  # link it (see the bgfx promotion above for why).
+  get_target_property(FREETYPE_TARGET_IS_GLOBAL ${FREETYPE_LINK_TARGET} IMPORTED_GLOBAL)
+  if (NOT FREETYPE_TARGET_IS_GLOBAL)
+    set_target_properties(${FREETYPE_LINK_TARGET} PROPERTIES IMPORTED_GLOBAL TRUE)
+  endif ()
 else ()
   set(FT_DISABLE_PNG ON CACHE BOOL "" FORCE)
   set(FT_DISABLE_HARFBUZZ ON CACHE BOOL "" FORCE)
@@ -157,6 +174,12 @@ target_link_libraries(
   ${METAL_LIBS}
   ${FONTCONFIG_LIBRARIES}
 )
+
+# VisageGraphics is merged into visage as an OBJECT library (see top-level
+# CMakeLists.txt), so its own link libraries never reach an install(EXPORT) -
+# forward the real (non-target-local) link requirements up to visage itself.
+set(VISAGE_GRAPHICS_PUBLIC_LIBS ${BGFX_LINK_TARGETS} ${FREETYPE_LINK_TARGET} PARENT_SCOPE)
+set(VISAGE_GRAPHICS_PRIVATE_LIBS ${WIN_LIBS} ${METAL_LIBS} ${FONTCONFIG_LIBRARIES} PARENT_SCOPE)
 
 include(embedded.cmake)
 
