@@ -30,7 +30,7 @@ namespace visage {
   class WindowEventHandler;
   class ClientWindowDecoration;
 
-  class TopLevelFrame : public Frame {
+  class VISAGE_EXPORT TopLevelFrame : public Frame {
   public:
     explicit TopLevelFrame(ApplicationEditor* editor);
     ~TopLevelFrame() override;
@@ -44,7 +44,7 @@ namespace visage {
     std::unique_ptr<ClientWindowDecoration> client_decoration_;
   };
 
-  class ApplicationEditor : public Frame {
+  class VISAGE_EXPORT ApplicationEditor : public Frame {
   public:
     static constexpr int kDefaultClientTitleBarHeight = 30;
 

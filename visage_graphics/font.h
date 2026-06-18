@@ -51,7 +51,7 @@ namespace visage {
     float height;
   };
 
-  class Font {
+  class VISAGE_EXPORT Font {
   public:
     static constexpr PackedGlyph kNullPackedGlyph = { 0, 0, 0, 0, 0.0f, 0.0f, 0.0f, nullptr };
 
@@ -144,9 +144,12 @@ namespace visage {
     PackedFont* packed_font_ = nullptr;
   };
 
-  class FontCache {
+  class VISAGE_EXPORT FontCache {
   public:
     friend class Font;
+
+    FontCache(const FontCache&) = delete;
+    FontCache& operator=(const FontCache&) = delete;
 
     ~FontCache();
 

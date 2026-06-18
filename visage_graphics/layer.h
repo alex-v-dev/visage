@@ -30,7 +30,7 @@ namespace visage {
   class Region;
   struct FrameBufferData;
 
-  class Layer {
+  class VISAGE_EXPORT Layer {
   public:
     static constexpr int kInvalidRectMemory = 2;
 

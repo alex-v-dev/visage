@@ -26,7 +26,7 @@
 namespace visage {
   class Layer;
 
-  class PostEffect {
+  class VISAGE_EXPORT PostEffect {
   public:
     explicit PostEffect(bool hdr = false) : hdr_(hdr) { }
 
@@ -43,7 +43,7 @@ namespace visage {
 
   struct DownsampleHandles;
 
-  class DownsamplePostEffect : public PostEffect {
+  class VISAGE_EXPORT DownsamplePostEffect : public PostEffect {
   public:
     static constexpr int kMaxDownsamples = 6;
 
@@ -65,7 +65,7 @@ namespace visage {
     int format_ = 0;
   };
 
-  class BlurPostEffect : public DownsamplePostEffect {
+  class VISAGE_EXPORT BlurPostEffect : public DownsamplePostEffect {
   public:
     static constexpr float kMinSigma = 0.01f;
 
@@ -86,7 +86,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(BlurPostEffect)
   };
 
-  class BloomPostEffect : public DownsamplePostEffect {
+  class VISAGE_EXPORT BloomPostEffect : public DownsamplePostEffect {
   public:
     BloomPostEffect();
     ~BloomPostEffect() override;
@@ -108,7 +108,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(BloomPostEffect)
   };
 
-  class ShaderPostEffect : public PostEffect {
+  class VISAGE_EXPORT ShaderPostEffect : public PostEffect {
   public:
     struct UniformData {
       float data[4];

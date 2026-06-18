@@ -280,7 +280,7 @@ namespace visage {
   typedef BaseTransform<double> DTransform;
   typedef BaseTransform<int64_t> ITransform64;
 
-  class IBounds {
+  class VISAGE_EXPORT IBounds {
   public:
     IBounds() = default;
     IBounds(int x, int y, int width, int height) : x_(x), y_(y), width_(width), height_(height) { }
@@ -468,7 +468,7 @@ namespace visage {
     int height_ = 0;
   };
 
-  class Bounds {
+  class VISAGE_EXPORT Bounds {
   public:
     Bounds() = default;
     Bounds(float x, float y, float width, float height) :

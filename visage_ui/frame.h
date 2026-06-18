@@ -27,6 +27,7 @@
 #include "visage_graphics/canvas.h"
 #include "visage_graphics/palette.h"
 #include "visage_graphics/theme.h"
+#include "visage_utils/defines.h"
 #include "visage_utils/space.h"
 
 #include <string>
@@ -46,7 +47,7 @@ namespace visage {
     std::function<void(std::string)> set_clipboard_text = nullptr;
   };
 
-  class Frame {
+  class VISAGE_EXPORT Frame {
   public:
     Frame() = default;
     explicit Frame(std::string name) : name_(std::move(name)) { }

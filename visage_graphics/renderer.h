@@ -28,7 +28,7 @@
 namespace visage {
   class GraphicsCallbackHandler;
 
-  class Renderer : public Thread {
+  class VISAGE_EXPORT Renderer : public Thread {
   public:
     static Renderer& instance();
 

@@ -31,7 +31,7 @@
 namespace visage {
   class Frame;
 
-  class EventTimer {
+  class VISAGE_EXPORT EventTimer {
   public:
     EventTimer() = default;
     virtual ~EventTimer();
@@ -56,7 +56,7 @@ namespace visage {
     long long last_run_time_ = 0;
   };
 
-  class EventManager {
+  class VISAGE_EXPORT EventManager {
   public:
     static EventManager& instance() {
       static EventManager instance;
@@ -83,7 +83,7 @@ namespace visage {
     EventManager::instance().addCallback(std::move(function));
   }
 
-  struct MouseEvent {
+  struct VISAGE_EXPORT MouseEvent {
     Point relativePosition() const { return relative_position; }
     Point windowPosition() const { return window_position; }
     bool isAltDown() const { return modifiers & kModifierAlt; }
@@ -134,7 +134,7 @@ namespace visage {
     int repeat_click_count = 0;
   };
 
-  class KeyEvent {
+  class VISAGE_EXPORT KeyEvent {
   public:
     KeyEvent(KeyCode key, int mods, bool is_down, bool repeat = false) :
         key_code(key), modifiers(mods), key_down(is_down), is_repeat(repeat) { }

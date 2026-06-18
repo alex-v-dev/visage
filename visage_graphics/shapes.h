@@ -187,7 +187,7 @@ namespace visage {
     float pixel_width = 1.0f;
   };
 
-  struct Fill : Primitive<> {
+  struct VISAGE_EXPORT Fill : Primitive<> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -198,7 +198,7 @@ namespace visage {
     void setVertexData(Vertex* vertices) const { setPrimitiveData(vertices); }
   };
 
-  struct Rectangle : Primitive<> {
+  struct VISAGE_EXPORT Rectangle : Primitive<> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -209,7 +209,7 @@ namespace visage {
     void setVertexData(Vertex* vertices) const { setPrimitiveData(vertices); }
   };
 
-  struct RoundedRectangle : Primitive<> {
+  struct VISAGE_EXPORT RoundedRectangle : Primitive<> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -229,7 +229,7 @@ namespace visage {
     float rounding = 0.0f;
   };
 
-  struct Circle : Primitive<> {
+  struct VISAGE_EXPORT Circle : Primitive<> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -240,7 +240,7 @@ namespace visage {
     void setVertexData(Vertex* vertices) const { setPrimitiveData(vertices); }
   };
 
-  struct Squircle : Primitive<> {
+  struct VISAGE_EXPORT Squircle : Primitive<> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -258,7 +258,7 @@ namespace visage {
     float power = 1.0f;
   };
 
-  struct FlatArc : Primitive<> {
+  struct VISAGE_EXPORT FlatArc : Primitive<> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -282,7 +282,7 @@ namespace visage {
     float radians = 0.0f;
   };
 
-  struct RoundedArc : Primitive<> {
+  struct VISAGE_EXPORT RoundedArc : Primitive<> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -306,7 +306,7 @@ namespace visage {
     float radians = 0.0f;
   };
 
-  struct FlatSegment : Primitive<ComplexShapeVertex> {
+  struct VISAGE_EXPORT FlatSegment : Primitive<ComplexShapeVertex> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -335,7 +335,7 @@ namespace visage {
     float b_y = 0.0f;
   };
 
-  struct RoundedSegment : Primitive<ComplexShapeVertex> {
+  struct VISAGE_EXPORT RoundedSegment : Primitive<ComplexShapeVertex> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -364,7 +364,7 @@ namespace visage {
     float b_y = 0.0f;
   };
 
-  struct Triangle : Primitive<ComplexShapeVertex> {
+  struct VISAGE_EXPORT Triangle : Primitive<ComplexShapeVertex> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -398,7 +398,7 @@ namespace visage {
     float c_y = 0.0f;
   };
 
-  struct QuadraticBezier : Primitive<ComplexShapeVertex> {
+  struct VISAGE_EXPORT QuadraticBezier : Primitive<ComplexShapeVertex> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -432,7 +432,7 @@ namespace visage {
     float c_y = 0.0f;
   };
 
-  struct Diamond : Primitive<> {
+  struct VISAGE_EXPORT Diamond : Primitive<> {
     VISAGE_CREATE_BATCH_ID
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
@@ -450,7 +450,7 @@ namespace visage {
     float rounding = 0.0f;
   };
 
-  struct ImageWrapper : Shape<TextureVertex> {
+  struct VISAGE_EXPORT ImageWrapper : Shape<TextureVertex> {
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
 
@@ -472,7 +472,7 @@ namespace visage {
     ImageAtlas* image_atlas = nullptr;
   };
 
-  struct GraphLineWrapper : Primitive<> {
+  struct VISAGE_EXPORT GraphLineWrapper : Primitive<> {
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
 
@@ -497,7 +497,7 @@ namespace visage {
     ImageAtlas::PackedImage packed_data;
   };
 
-  struct GraphFillWrapper : Primitive<> {
+  struct VISAGE_EXPORT GraphFillWrapper : Primitive<> {
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
 
@@ -523,7 +523,7 @@ namespace visage {
     ImageAtlas::PackedImage packed_data;
   };
 
-  struct HeatMapWrapper : Primitive<> {
+  struct VISAGE_EXPORT HeatMapWrapper : Primitive<> {
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
 
@@ -557,7 +557,7 @@ namespace visage {
     ImageAtlas::PackedImage packed_data;
   };
 
-  struct PathFillWrapper : Shape<TextureVertex> {
+  struct VISAGE_EXPORT PathFillWrapper : Shape<TextureVertex> {
     VISAGE_CREATE_BATCH_ID
     static constexpr int kLineVerticesPerPoint = 6;
     static constexpr float kBuffer = 1.0f;
@@ -727,7 +727,7 @@ namespace visage {
     Shader* shader = nullptr;
   };
 
-  struct SampleRegion : Shape<PostEffectVertex> {
+  struct VISAGE_EXPORT SampleRegion : Shape<PostEffectVertex> {
     static const EmbeddedFile& vertexShader();
     static const EmbeddedFile& fragmentShader();
 

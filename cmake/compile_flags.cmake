@@ -14,9 +14,8 @@ elseif (UNIX)
   add_compile_options(-DVISAGE_LINUX=1)
 endif()
 
-# Lets headers know that data symbols (e.g. theme ColorId/ValueId statics)
-# need __declspec(dllexport)/dllimport since CMake's WINDOWS_EXPORT_ALL_SYMBOLS
-# only auto-exports functions.
+# Lets headers know whether VISAGE_EXPORT should resolve to
+# __declspec(dllexport)/dllimport for the visage shared library on Windows.
 if (WIN32 AND BUILD_SHARED_LIBS)
   add_compile_definitions(VISAGE_BUILD_SHARED)
 endif()

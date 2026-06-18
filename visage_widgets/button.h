@@ -32,7 +32,7 @@
 #include <functional>
 
 namespace visage {
-  class Button : public Frame {
+  class VISAGE_EXPORT Button : public Frame {
   public:
     Button() { hover_amount_.setTargetValue(1.0f); }
 
@@ -117,7 +117,7 @@ namespace visage {
     bool border_when_inactive_ = false;
   };
 
-  class IconButton : public Button {
+  class VISAGE_EXPORT IconButton : public Button {
   public:
     static constexpr float kDefaultShadowRadius = 3.0f;
 
@@ -222,7 +222,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(ToggleButton)
   };
 
-  class ButtonChangeAction : public UndoableAction {
+  class VISAGE_EXPORT ButtonChangeAction : public UndoableAction {
   public:
     ButtonChangeAction(ToggleButton* button, bool toggled_on) :
         button_(button), toggled_on_(toggled_on) { }
@@ -235,7 +235,7 @@ namespace visage {
     bool toggled_on_ = false;
   };
 
-  class ToggleIconButton : public ToggleButton {
+  class VISAGE_EXPORT ToggleIconButton : public ToggleButton {
   public:
     static constexpr float kDefaultShadowRadius = 3.0f;
 
@@ -310,7 +310,7 @@ namespace visage {
     Dimension margin_;
   };
 
-  class ToggleTextButton : public ToggleButton {
+  class VISAGE_EXPORT ToggleTextButton : public ToggleButton {
   public:
     explicit ToggleTextButton(const std::string& name);
     explicit ToggleTextButton(const std::string& name, const Font& font);

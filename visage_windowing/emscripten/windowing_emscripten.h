@@ -25,7 +25,7 @@
 #include "windowing.h"
 
 namespace visage {
-  class WindowEmscripten : public Window {
+  class VISAGE_EXPORT WindowEmscripten : public Window {
   public:
     static WindowEmscripten* running_instance_;
     static WindowEmscripten* runningInstance() { return running_instance_; }

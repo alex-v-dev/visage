@@ -23,12 +23,25 @@
 
 #include <cstdarg>
 
+// Marks a class, function, or data member as part of the visage DLL's
+// public interface when built as a shared library on Windows.
+#if VISAGE_WINDOWS && defined(VISAGE_BUILD_SHARED)
+#if defined(VISAGE_BUILDING_DLL)
+#define VISAGE_EXPORT __declspec(dllexport)
+#else
+#define VISAGE_EXPORT __declspec(dllimport)
+#endif
+#else
+#define VISAGE_EXPORT
+#endif
+
 namespace visage {
   constexpr float kPi = 3.14159265358979323846f;
 
   class String;
-  void debugLogString(const char* file, unsigned int line, const String& log_message);
-  void debugLogArgs(const char* file, unsigned int line, const char* format, va_list arg_list);
+  VISAGE_EXPORT void debugLogString(const char* file, unsigned int line, const String& log_message);
+  VISAGE_EXPORT void debugLogArgs(const char* file, unsigned int line, const char* format,
+                                  va_list arg_list);
 
   template<typename T>
   void debugLog(const char* file, unsigned int line, T message, ...) {
@@ -43,8 +56,8 @@ namespace visage {
     va_end(args);
   }
 
-  void debugAssert(bool condition, const char* file, unsigned int line);
-  void forceCrash();
+  VISAGE_EXPORT void debugAssert(bool condition, const char* file, unsigned int line);
+  VISAGE_EXPORT void forceCrash();
 }
 
 #define VISAGE_FORCE_CRASH() visage::forceCrash()
@@ -103,17 +116,4 @@ namespace visage {
 #define VISAGE_STDCALL __stdcall
 #else
 #define VISAGE_STDCALL
-#endif
-
-// CMake's WINDOWS_EXPORT_ALL_SYMBOLS only auto-exports functions, not data
-// symbols, so static theme data members (ColorId/ValueId) need explicit
-// dllexport/dllimport when built as a shared library on Windows.
-#if VISAGE_WINDOWS && defined(VISAGE_BUILD_SHARED)
-#if defined(VISAGE_BUILDING_DLL)
-#define VISAGE_EXPORT __declspec(dllexport)
-#else
-#define VISAGE_EXPORT __declspec(dllimport)
-#endif
-#else
-#define VISAGE_EXPORT
 #endif

@@ -30,7 +30,7 @@
 #include <set>
 
 namespace visage {
-  class PaletteColorEditor : public ScrollableFrame {
+  class VISAGE_EXPORT PaletteColorEditor : public ScrollableFrame {
   public:
     static constexpr float kPaletteWidthRatio = 0.25f;
     static constexpr int kColorSpacing = 2;
@@ -117,7 +117,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(PaletteColorEditor)
   };
 
-  class PaletteValueEditor : public ScrollableFrame {
+  class VISAGE_EXPORT PaletteValueEditor : public ScrollableFrame {
   public:
     static constexpr int kValueIdHeight = 70;
     static constexpr int kMaxValues = 500;

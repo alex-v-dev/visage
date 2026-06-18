@@ -26,7 +26,7 @@
 #include "visage_utils/time_utils.h"
 
 namespace visage {
-  class ScrollBar : public Frame {
+  class VISAGE_EXPORT ScrollBar : public Frame {
   public:
     ScrollBar() :
         color_(Animation<float>::kRegularTime, Animation<float>::kEaseOut, Animation<float>::kEaseOut),
@@ -94,7 +94,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(ScrollBar)
   };
 
-  class ScrollableFrame : public Frame {
+  class VISAGE_EXPORT ScrollableFrame : public Frame {
   public:
     static constexpr float kDefaultSmoothTime = 0.1f;
     static constexpr float kDefaultWheelSensitivity = 100.0f;

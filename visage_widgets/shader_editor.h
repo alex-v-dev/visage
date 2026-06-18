@@ -33,7 +33,7 @@
 // Not for production use.
 
 namespace visage {
-  class ShaderCompiler : public Thread {
+  class VISAGE_EXPORT ShaderCompiler : public Thread {
   public:
     enum class Platform {
       Linux,
@@ -149,7 +149,7 @@ namespace visage {
     std::map<std::string, int> watched_edit_times_;
   };
 
-  class ShaderEditor : public Frame {
+  class VISAGE_EXPORT ShaderEditor : public Frame {
   public:
     static constexpr float kPaddingHeight = 8.0f;
     static constexpr float kInfoHeightRatio = 0.3f;

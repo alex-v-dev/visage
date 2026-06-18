@@ -47,7 +47,7 @@ namespace visage {
     static HHOOK event_hook_;
   };
 
-  class WindowWin32 : public Window {
+  class VISAGE_EXPORT WindowWin32 : public Window {
   public:
     static constexpr int kTimerId = 1;
     static HCURSOR cursor_;

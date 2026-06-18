@@ -25,7 +25,7 @@
 #include "visage_ui/frame.h"
 
 namespace visage {
-  class ShaderQuad : public Frame {
+  class VISAGE_EXPORT ShaderQuad : public Frame {
   public:
     ShaderQuad(const EmbeddedFile& vertex_shader, const EmbeddedFile& fragment_shader, BlendMode state);
     ~ShaderQuad() override = default;

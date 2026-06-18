@@ -21,30 +21,32 @@
 
 #pragma once
 
+#include "defines.h"
+
 #include <filesystem>
 #include <vector>
 
 namespace visage {
   typedef std::filesystem::path File;
 
-  bool replaceFileWithData(const File& file, const unsigned char* data, size_t size);
-  bool replaceFileWithText(const File& file, const std::string& text);
-  bool hasWriteAccess(const File& file);
-  bool fileExists(const File& file);
-  bool isDirectory(const File& file);
-  bool appendTextToFile(const File& file, const std::string& text);
-  std::unique_ptr<unsigned char[]> loadFileData(const File& file, size_t& size);
-  std::string loadFileAsString(const File& file);
+  VISAGE_EXPORT bool replaceFileWithData(const File& file, const unsigned char* data, size_t size);
+  VISAGE_EXPORT bool replaceFileWithText(const File& file, const std::string& text);
+  VISAGE_EXPORT bool hasWriteAccess(const File& file);
+  VISAGE_EXPORT bool fileExists(const File& file);
+  VISAGE_EXPORT bool isDirectory(const File& file);
+  VISAGE_EXPORT bool appendTextToFile(const File& file, const std::string& text);
+  VISAGE_EXPORT std::unique_ptr<unsigned char[]> loadFileData(const File& file, size_t& size);
+  VISAGE_EXPORT std::string loadFileAsString(const File& file);
 
-  File hostExecutable();
-  File appDataDirectory();
-  File userDocumentsDirectory();
-  File createTemporaryFile(const std::string& extension);
-  void createDirectory(const File& file);
+  VISAGE_EXPORT File hostExecutable();
+  VISAGE_EXPORT File appDataDirectory();
+  VISAGE_EXPORT File userDocumentsDirectory();
+  VISAGE_EXPORT File createTemporaryFile(const std::string& extension);
+  VISAGE_EXPORT void createDirectory(const File& file);
 
-  std::string fileName(const File& file);
-  std::string fileStem(const File& file);
-  std::string hostName();
-  std::vector<File> searchForFiles(const File& directory, const std::string& regex);
-  std::vector<File> searchForDirectories(const File& directory, const std::string& regex);
+  VISAGE_EXPORT std::string fileName(const File& file);
+  VISAGE_EXPORT std::string fileStem(const File& file);
+  VISAGE_EXPORT std::string hostName();
+  VISAGE_EXPORT std::vector<File> searchForFiles(const File& directory, const std::string& regex);
+  VISAGE_EXPORT std::vector<File> searchForDirectories(const File& directory, const std::string& regex);
 }

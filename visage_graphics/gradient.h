@@ -34,11 +34,11 @@
 namespace visage {
   struct GradientAtlasTexture;
 
-  class Gradient {
+  class VISAGE_EXPORT Gradient {
   public:
     static constexpr int kMaxGradientResolution = 512;
-    static VISAGE_EXPORT Gradient kViridis;
-    static VISAGE_EXPORT Gradient kMagma;
+    static Gradient kViridis;
+    static Gradient kMagma;
 
     static int compare(const Gradient& a, const Gradient& b) {
       if (a.numColors() < b.numColors())
@@ -215,7 +215,7 @@ namespace visage {
     bool reflect_ = false;
   };
 
-  class GradientAtlas {
+  class VISAGE_EXPORT GradientAtlas {
   public:
     struct PackedGradientRect {
       explicit PackedGradientRect(Gradient g) : gradient(std::move(g)) { }
@@ -447,7 +447,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(GradientPosition)
   };
 
-  class Brush {
+  class VISAGE_EXPORT Brush {
   public:
     static Brush none() {
       return { {}, GradientPosition(GradientPosition::InterpolationShape::Solid) };
@@ -549,7 +549,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(Brush)
   };
 
-  class PackedBrush {
+  class VISAGE_EXPORT PackedBrush {
   public:
     static void computeVertexGradientTexturePositions(GradientTexturePosition& result,
                                                       const PackedBrush* brush) {

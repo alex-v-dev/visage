@@ -180,10 +180,6 @@ endforeach()
 
 set_target_properties(visage PROPERTIES FOLDER "visage")
 
-# When built as a shared library on Windows, auto-export all symbols so the
-# whole visage API is available to consumers without annotating every class.
-set_target_properties(visage PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
 install(
   TARGETS visage
   EXPORT visageTargets

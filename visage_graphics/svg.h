@@ -339,7 +339,7 @@ namespace visage {
     float marker_angle = 0.0f;
   };
 
-  class SvgParser {
+  class VISAGE_EXPORT SvgParser {
   public:
     static std::unique_ptr<SvgDrawable> loadDrawable(const unsigned char* data, int data_size,
                                                      SvgViewSettings& view) {
@@ -383,7 +383,7 @@ namespace visage {
     float draw_height_ = 0.0f;
   };
 
-  class Svg {
+  class VISAGE_EXPORT Svg {
   public:
     Svg() = default;
     Svg(const Svg& other) = default;

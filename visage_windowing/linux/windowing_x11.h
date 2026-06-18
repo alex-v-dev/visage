@@ -40,7 +40,7 @@ namespace visage {
     kResizeBottom = 1 << 4,
   };
 
-  class X11Connection {
+  class VISAGE_EXPORT X11Connection {
   public:
     static constexpr int kDndVersion = 5;
     static constexpr int kNumDndActions = 2;
@@ -193,7 +193,7 @@ namespace visage {
     float dpi = Window::kDefaultDpi;
   };
 
-  class WindowX11 : public Window {
+  class VISAGE_EXPORT WindowX11 : public Window {
   public:
     static constexpr long kEventMask = ExposureMask | KeyPressMask | KeyReleaseMask |
                                        ButtonPressMask | ButtonReleaseMask | StructureNotifyMask |

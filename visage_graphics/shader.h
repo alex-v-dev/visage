@@ -27,7 +27,7 @@
 namespace visage {
   class Canvas;
 
-  class Shader {
+  class VISAGE_EXPORT Shader {
   public:
     Shader() = delete;
     Shader(const EmbeddedFile& vertex_shader, const EmbeddedFile& fragment_shader, BlendMode state) :

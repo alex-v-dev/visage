@@ -26,7 +26,7 @@
 #include "visage_ui/frame.h"
 
 namespace visage {
-  class HueEditor : public Frame {
+  class VISAGE_EXPORT HueEditor : public Frame {
   public:
     HueEditor() = default;
 
@@ -58,7 +58,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(HueEditor)
   };
 
-  class ValueSaturationEditor : public Frame {
+  class VISAGE_EXPORT ValueSaturationEditor : public Frame {
   public:
     ValueSaturationEditor() = default;
 
@@ -104,7 +104,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(ValueSaturationEditor)
   };
 
-  class ColorPicker : public Frame {
+  class VISAGE_EXPORT ColorPicker : public Frame {
   public:
     static constexpr float kHueWidth = 24.0f;
     static constexpr float kPadding = 8.0f;

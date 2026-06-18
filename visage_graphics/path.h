@@ -59,7 +59,7 @@ namespace visage {
     return orientation(target1, target2, source);
   }
 
-  class Path {
+  class VISAGE_EXPORT Path {
   public:
     static constexpr float kDefaultErrorTolerance = 0.1f;
     static constexpr float kDefaultMiterLimit = 4.0f;
@@ -591,7 +591,7 @@ namespace visage {
 
   struct PathAtlasTexture;
 
-  class PathAtlas {
+  class VISAGE_EXPORT PathAtlas {
   public:
     static constexpr int kBuffer = 1;
 

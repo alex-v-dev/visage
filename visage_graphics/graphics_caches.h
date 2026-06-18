@@ -29,7 +29,7 @@ namespace visage {
   struct ProgramCacheMap;
   struct UniformCacheMap;
 
-  class ShaderCache {
+  class VISAGE_EXPORT ShaderCache {
   public:
     static ShaderCache* instance() {
       static ShaderCache cache;
@@ -71,7 +71,7 @@ namespace visage {
     std::unique_ptr<ShaderCacheMap> cache_;
   };
 
-  class ProgramCache {
+  class VISAGE_EXPORT ProgramCache {
   public:
     struct ShaderPair {
       EmbeddedFile vertex;
@@ -121,7 +121,7 @@ namespace visage {
     std::unique_ptr<ProgramCacheMap> cache_;
   };
 
-  class UniformCache {
+  class VISAGE_EXPORT UniformCache {
   public:
     enum Type {
       Sampler,

@@ -31,12 +31,12 @@
 namespace visage {
   class PopupMenu;
 #if defined(__APPLE__) && defined(__MACH__)
-  void setNativeMenuBar(const PopupMenu& menu);
+  VISAGE_EXPORT void setNativeMenuBar(const PopupMenu& menu);
 #else
   inline void setNativeMenuBar(const PopupMenu& menu) { }
 #endif
 
-  class PopupMenu {
+  class VISAGE_EXPORT PopupMenu {
   public:
     static constexpr int kNotSet = INT_MIN;
 
@@ -106,9 +106,9 @@ namespace visage {
     std::vector<PopupMenu> options_;
   };
 
-  class PopupList : public ScrollableFrame {
+  class VISAGE_EXPORT PopupList : public ScrollableFrame {
   public:
-    class Listener {
+    class VISAGE_EXPORT Listener {
     public:
       virtual ~Listener() = default;
       virtual void optionSelected(const PopupMenu& option, PopupList* list) = 0;
@@ -173,9 +173,9 @@ namespace visage {
     Font font_;
   };
 
-  class PopupMenuFrame : public Frame,
-                         public PopupList::Listener,
-                         public EventTimer {
+  class VISAGE_EXPORT PopupMenuFrame : public Frame,
+                                       public PopupList::Listener,
+                                       public EventTimer {
   public:
     static constexpr int kMaxSubMenus = 4;
     static constexpr int kWaitForSelection = 20;
@@ -223,7 +223,7 @@ namespace visage {
     VISAGE_LEAK_CHECKER(PopupMenuFrame)
   };
 
-  class ValueDisplay : public Frame {
+  class VISAGE_EXPORT ValueDisplay : public Frame {
   public:
     ValueDisplay() { setIgnoresMouseEvents(true, false); }
 
