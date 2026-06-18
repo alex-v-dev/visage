@@ -127,6 +127,13 @@ else ()
     ${BX_DIR}/include
     ${BIMG_DIR}/include
   )
+
+  # bgfx/bx/bimg* are built locally by this project (via FetchContent) and
+  # are never installed/exported by bgfx.cmake itself (BGFX_INSTALL is off
+  # above), so visage must install/export them itself - otherwise
+  # install(EXPORT) would reject visage's link to them as "not in any
+  # export set" (see top-level CMakeLists.txt).
+  set(VISAGE_LOCAL_THIRD_PARTY_TARGETS bgfx bx bimg_decode bimg_encode bimg)
 endif ()
 
 # --- FreeType ---
@@ -162,6 +169,11 @@ else ()
 
   set(FREETYPE_LINK_TARGET freetype)
   set(FREETYPE_PRIVATE_INCLUDES ${freetype_SOURCE_DIR}/include)
+
+  # freetype is built locally by this project (via FetchContent) and is
+  # never installed/exported by its own CMakeLists.txt, so visage must
+  # install/export it itself - see the bgfx note above.
+  list(APPEND VISAGE_LOCAL_THIRD_PARTY_TARGETS freetype)
 endif ()
 
 target_link_libraries(
@@ -180,6 +192,7 @@ target_link_libraries(
 # forward the real (non-target-local) link requirements up to visage itself.
 set(VISAGE_GRAPHICS_PUBLIC_LIBS ${BGFX_LINK_TARGETS} ${FREETYPE_LINK_TARGET} PARENT_SCOPE)
 set(VISAGE_GRAPHICS_PRIVATE_LIBS ${WIN_LIBS} ${METAL_LIBS} ${FONTCONFIG_LIBRARIES} PARENT_SCOPE)
+set(VISAGE_LOCAL_THIRD_PARTY_TARGETS ${VISAGE_LOCAL_THIRD_PARTY_TARGETS} PARENT_SCOPE)
 
 include(embedded.cmake)
 

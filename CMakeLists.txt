@@ -114,8 +114,12 @@ function(visage_copy_runtime_dlls TARGET)
     list(APPEND DLL_SETS "$<TARGET_RUNTIME_DLLS:visage>")
   endif ()
 
+  # When there are no runtime DLLs at all (e.g. a fully static build with
+  # in-tree bgfx/freetype), $<TARGET_RUNTIME_DLLS:...> expands to nothing
+  # and copy_if_different would get no source files, which is a hard error.
+  # Fall back to a no-op command (`true`) in that case.
   add_custom_command(TARGET ${TARGET} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DLL_SETS} "$<TARGET_FILE_DIR:${TARGET}>"
+    COMMAND ${CMAKE_COMMAND} -E $<IF:$<BOOL:$<TARGET_RUNTIME_DLLS:${TARGET}>>,copy_if_different,true> ${DLL_SETS} "$<TARGET_FILE_DIR:${TARGET}>"
     COMMAND_EXPAND_LISTS
   )
 endfunction()
@@ -193,7 +197,7 @@ target_link_libraries(visage
 set_target_properties(visage PROPERTIES FOLDER "visage")
 
 install(
-  TARGETS visage
+  TARGETS visage ${VISAGE_LOCAL_THIRD_PARTY_TARGETS}
   EXPORT visageTargets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
