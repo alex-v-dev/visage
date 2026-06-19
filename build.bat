@@ -1,6 +1,8 @@
 @echo off
 setlocal
 
+CALL "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+
 set INSTALL_DIR=Z:\avDependencies-msvc2022-reldeb-shared\Visage
 set BUILD_TYPE=%~2
 if "%BUILD_TYPE%"=="" set BUILD_TYPE=Release
@@ -8,16 +10,16 @@ if "%BUILD_TYPE%"=="" set BUILD_TYPE=Release
 mkdir build 2>nul
 
 cmake -B build ^
+  -G Ninja ^
   -D CMAKE_INSTALL_PREFIX=%INSTALL_DIR% ^
   -D CMAKE_PREFIX_PATH=%INSTALL_DIR% ^
-  -D BUILD_SHARED_LIBS=OFF ^
+  -D BUILD_SHARED_LIBS=ON ^
   -D VISAGE_BUILD_EXAMPLES=ON ^
   -D VISAGE_BUILD_TESTS=OFF ^
   -D VISAGE_SYSTEM_BGFX=ON ^
   -D VISAGE_SYSTEM_FREETYPE=ON ^
   -D bgfx_DIR=Z:\avDependencies-msvc2022-reldeb-shared\BGFX\lib\cmake\bgfx ^
   -D Freetype_DIR=Z:\avDependencies-msvc2022-reldeb-shared\FreeType\lib\cmake\freetype
-
   .
 
 cmake --build build --config %BUILD_TYPE% --target install

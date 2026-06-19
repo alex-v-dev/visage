@@ -11,6 +11,7 @@ if (NOT DEFINED CMAKE_CXX_STANDARD)
 endif ()
 
 project(visage VERSION 0.1.0)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if (APPLE)
   enable_language(OBJC)
