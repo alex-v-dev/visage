@@ -75,6 +75,7 @@ if (VISAGE_SYSTEM_BGFX)
   FetchContent_Declare(stb
     URL https://github.com/nothings/stb/archive/refs/heads/master.zip
     SOURCE_DIR "${CMAKE_BINARY_DIR}/_deps/stb"
+    DOWNLOAD_EXTRACT_TIMESTAMP ON
   )
   FetchContent_MakeAvailable(stb)
 
@@ -204,13 +205,13 @@ target_include_directories(VisageGraphics
   ${FREETYPE_PRIVATE_INCLUDES}
 )
 
-if(WIN32)
+if (WIN32)
   target_compile_definitions(VisageGraphics PRIVATE
     WINVER=0x0A00
     _WIN32_WINNT=0x0A00
     NTDDI_VERSION=0x0A000000
   )
-endif()
+endif ()
 
 target_include_directories(VisageGraphics
   SYSTEM PRIVATE
