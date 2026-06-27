@@ -100,7 +100,7 @@ endfunction()
 # directly from the build tree. No-op on non-Windows / static builds.
 function(visage_copy_runtime_dlls TARGET)
   if (NOT WIN32)
-    return ()
+    return()
   endif ()
 
   set(DLL_SETS "$<TARGET_RUNTIME_DLLS:${TARGET}>")
@@ -230,6 +230,12 @@ install(
   FILE visageTargets.cmake
   NAMESPACE visage::
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/visage
+)
+
+export(
+  EXPORT visageTargets
+  FILE ${CMAKE_CURRENT_BINARY_DIR}/visageTargets.cmake
+  NAMESPACE visage::
 )
 
 write_basic_package_version_file(
