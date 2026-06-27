@@ -366,7 +366,7 @@ namespace visage {
 
     submit_pass = submit_pass + 1;
     for (Region* region : regions_) {
-      if (region->postEffect())
+      if (region->postEffect() && invalid_rects_.count(region))
         submit_pass = region->postEffect()->preprocess(region, submit_pass);
     }
 
