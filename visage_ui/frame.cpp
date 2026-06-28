@@ -78,6 +78,7 @@ namespace visage {
     region_.addRegion(child->region());
 
     child->setDpiScale(dpi_scale_);
+    child->setScale(scale_);
     if (initialized_)
       child->init();
 
@@ -161,7 +162,7 @@ namespace visage {
   }
 
   void Frame::setBounds(Bounds bounds) {
-    IBounds new_native_bounds = (bounds * dpi_scale_).round();
+    IBounds new_native_bounds = (bounds * dpi_scale_ * scale_).round();
     if (bounds_ == bounds && native_bounds_ == new_native_bounds)
       return;
 
@@ -182,7 +183,7 @@ namespace visage {
   }
 
   void Frame::setNativeBounds(IBounds native_bounds) {
-    setBounds(Bounds(native_bounds) * (1.0f / dpi_scale_));
+    setBounds(Bounds(native_bounds) * (1.0f / (dpi_scale_ * scale_)));
   }
 
   IBounds Frame::computeLayoutBoundingBox(IBounds bounds) const {
@@ -194,7 +195,7 @@ namespace visage {
       if (child->layout_)
         children_layouts.push_back(child->layout_.get());
     }
-    layout_->flexPositions(children_layouts, bounds, dpi_scale_);
+    layout_->flexPositions(children_layouts, bounds, dpi_scale_ * scale_);
     return layout_->boundingBox();
   }
 
@@ -206,8 +207,8 @@ namespace visage {
           children_layouts.push_back(child->layout_.get());
       }
 
-      std::vector<IBounds> children_bounds = layout_->flexPositions(children_layouts,
-                                                                    nativeLocalBounds(), dpi_scale_);
+      std::vector<IBounds> children_bounds = layout_->flexPositions(children_layouts, nativeLocalBounds(),
+                                                                    dpi_scale_ * scale_);
       int index = 0;
       for (Frame* child : children_) {
         if (child->layout_)
@@ -222,7 +223,7 @@ namespace visage {
 
     int width = this->nativeWidth();
     int height = this->nativeHeight();
-    float dpi = dpi_scale_;
+    float dpi = dpi_scale_ * scale_;
 
     int pad_left = 0;
     int pad_top = 0;
@@ -352,12 +353,15 @@ namespace visage {
     if (palette_)
       canvas.setPalette(palette_);
 
+    canvas.state()->scale = dpi_scale_ * scale_;
     on_draw_.callback(canvas);
+
     if (alpha_transparency_ != 1.0f) {
       canvas.setBlendMode(BlendMode::Mult);
       canvas.setColor(Color(0xffffffff).withAlpha(alpha_transparency_));
       canvas.fill(0, 0, width(), height());
     }
+
     canvas.endRegion();
   }
 

@@ -85,6 +85,7 @@ namespace visage {
 
     virtual void resized() { }
     virtual void dpiChanged() { }
+    virtual void scaleChanged() { }
     virtual void visibilityChanged() { }
     virtual void hierarchyChanged() { }
     virtual void focusChanged(bool is_focused, bool was_clicked) { }
@@ -319,7 +320,21 @@ namespace visage {
         child->setDpiScale(dpi_scale);
     }
 
+    void setScale(float scale) {
+      bool changed = scale_ != scale;
+      scale_ = scale;
+
+      if (changed) {
+        on_scale_change_.callback();
+        redraw();
+      }
+
+      for (Frame* child : children_)
+        child->setScale(scale);
+    }
+
     float dpiScale() const { return dpi_scale_; }
+    float scale() const { return scale_; }
 
     bool requestRedraw() {
       if (event_handler_ && event_handler_->request_redraw) {
@@ -435,6 +450,7 @@ namespace visage {
     CallbackList<void(const Frame*)> on_child_added_;
     CallbackList<void(const Frame*)> on_child_removed_;
     CallbackList<void()> on_dpi_change_ { [this] { dpiChanged(); } };
+    CallbackList<void()> on_scale_change_ { [this] { scaleChanged(); } };
     CallbackList<void()> on_visibility_change_ { [this] { visibilityChanged(); } };
     CallbackList<void()> on_hierarchy_change_ { [this] { hierarchyChanged(); } };
     CallbackList<void(bool, bool)> on_focus_change_ { [this](bool is_focused, bool was_clicked) {
@@ -465,6 +481,7 @@ namespace visage {
     FrameEventHandler* event_handler_ = nullptr;
 
     float dpi_scale_ = 1.0f;
+    float scale_ = 1.0f;
     Palette* palette_ = nullptr;
     theme::OverrideId palette_override_;
     bool initialized_ = false;
