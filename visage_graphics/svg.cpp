@@ -1500,13 +1500,15 @@ namespace visage {
     }
   }
 
-  std::unique_ptr<SvgDrawable> SvgParser::computeDrawables(Tag& tag, std::vector<DrawableState>& state_stack) {
+  std::unique_ptr<SvgDrawable> SvgParser::computeDrawables(Tag& tag, std::vector<DrawableState>& state_stack,
+                                                           bool inside_non_rendering_container) {
     if (tag.data.ignored || tag.data.name == "marker" || tag.data.name == "mask")
       return nullptr;
 
     state_stack.push_back(state_stack.back());
     auto drawable = std::make_unique<SvgDrawable>();
-    drawable->is_defines = tag.data.name == "defs";
+    bool is_non_rendering_container = tag.data.name == "defs" || tag.data.name == "clipPath";
+    drawable->is_defines = inside_non_rendering_container || is_non_rendering_container;
 
     for (const auto& style : style_lookup_) {
       if (style.first.matches(tag))
@@ -1528,7 +1530,7 @@ namespace visage {
     loadOffset(tag, drawable.get());
     loadDrawableTransform(tag, drawable.get());
     for (auto& child_tag : tag.children) {
-      auto child = computeDrawables(child_tag, state_stack);
+      auto child = computeDrawables(child_tag, state_stack, drawable->is_defines);
       if (child)
         drawable->children.push_back(std::move(child));
     }
