@@ -356,7 +356,8 @@ namespace visage {
 
     void parseData(const unsigned char* data, int data_size);
 
-    std::unique_ptr<SvgDrawable> computeDrawables(Tag& tag, std::vector<DrawableState>& state_stack);
+    std::unique_ptr<SvgDrawable> computeDrawables(Tag& tag, std::vector<DrawableState>& state_stack,
+                                                  bool inside_non_rendering_container = false);
     void parseStyleAttribute(const std::string& style, DrawableState& state, SvgDrawable* drawable);
     void parseStyleDefinition(const std::string& key, const std::string& value,
                               DrawableState& state, SvgDrawable* drawable);
