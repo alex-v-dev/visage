@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "defines.h"
+
 #include <chrono>
 #include <string>
 
@@ -46,5 +48,5 @@ namespace visage::time {
     return std::chrono::system_clock::now();
   }
 
-  std::string formatTime(const Time& time, const char* format_string);
+  VISAGE_EXPORT std::string formatTime(const Time& time, const char* format_string);
 }

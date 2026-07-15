@@ -61,6 +61,8 @@ foreach (EXAMPLE ${EXAMPLES})
       EmbeddedIconResources
       EmbeddedImageResources
     )
+
+    visage_copy_runtime_dlls(Example${EXAMPLE})
   endif ()
 endforeach ()
 

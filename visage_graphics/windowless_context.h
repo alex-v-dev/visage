@@ -21,9 +21,11 @@
 
 #pragma once
 
+#include "visage_utils/defines.h"
+
 namespace visage {
 #if VISAGE_MAC
-  void* windowlessContext();
+  VISAGE_EXPORT void* windowlessContext();
 #else
   static void* windowlessContext() {
     return nullptr;

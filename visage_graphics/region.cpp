@@ -82,6 +82,10 @@ namespace visage {
 
       rect = rect + IPoint(region->x_, region->y_);
       region = region->parent_;
+      
+      rect = rect.intersection({ 0, 0, region->width_, region->height_ });
+      if (!rect.hasArea())
+        return;
     }
 
     canvas_->invalidateRectInRegion(rect, region, region->layer_index_);

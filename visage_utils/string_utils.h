@@ -21,11 +21,13 @@
 
 #pragma once
 
+#include "defines.h"
+
 #include <memory>
 #include <string>
 
 namespace visage {
-  class String {
+  class VISAGE_EXPORT String {
   public:
     template<typename Utf32String>
     static Utf32String convertUtf8ToUtf32(const std::string& utf8_str) {
@@ -406,6 +408,6 @@ namespace visage {
     return os << string.toUtf8();
   }
 
-  std::string encodeDataBase64(const unsigned char* data, size_t size);
-  std::unique_ptr<unsigned char[]> decodeBase64Data(const std::string& string, int& size);
+  VISAGE_EXPORT std::string encodeDataBase64(const unsigned char* data, size_t size);
+  VISAGE_EXPORT std::unique_ptr<unsigned char[]> decodeBase64Data(const std::string& string, int& size);
 }

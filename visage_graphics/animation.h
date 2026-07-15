@@ -122,7 +122,7 @@ namespace visage {
   private:
     T source_;
     T target_;
-    T time_ = kRegularTime;
+    float time_ = kRegularTime;
     long long last_ms_ = 0;
 
     EasingFunction forward_easing_ = kLinear;

@@ -25,7 +25,7 @@
 #include "visage_ui/frame.h"
 
 namespace visage {
-  class GraphLine : public Frame {
+  class VISAGE_EXPORT GraphLine : public Frame {
   public:
     VISAGE_THEME_DEFINE_COLOR(LineColor);
     VISAGE_THEME_DEFINE_COLOR(LineFillColor);

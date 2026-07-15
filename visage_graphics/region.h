@@ -28,7 +28,7 @@ namespace visage {
   class Palette;
   class Shader;
 
-  class Region {
+  class VISAGE_EXPORT Region {
   public:
     friend class Canvas;
 

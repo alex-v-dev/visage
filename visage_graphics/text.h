@@ -27,7 +27,7 @@
 namespace visage {
   class Canvas;
 
-  class Text {
+  class VISAGE_EXPORT Text {
   public:
     Text() = default;
     explicit Text(const String& text, const Font& font,

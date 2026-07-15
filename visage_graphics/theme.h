@@ -58,7 +58,7 @@ namespace visage::theme {
     return file_path.substr(start + 1, end - start - 1);
   }
 
-  class ColorId {
+  class VISAGE_EXPORT ColorId {
   public:
     static constexpr unsigned int kInvalidId = 0xFFFFFFFF;
 
@@ -122,7 +122,7 @@ namespace visage::theme {
     };
   };
 
-  class ValueId {
+  class VISAGE_EXPORT ValueId {
   public:
     static constexpr unsigned int kInvalidId = 0xFFFFFFFF;
 
@@ -183,7 +183,7 @@ namespace visage::theme {
     };
   };
 
-  class OverrideId {
+  class VISAGE_EXPORT OverrideId {
   public:
     static constexpr unsigned int kInvalidId = 0xFFFFFFFF;
     static constexpr unsigned int kDefaultId = 0;

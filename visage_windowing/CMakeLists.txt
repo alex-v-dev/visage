@@ -32,6 +32,11 @@ target_include_directories(VisageWindowing
 )
 target_link_libraries(VisageWindowing PRIVATE ${X11_LIBS} ${WIN_LIBS})
 
+# VisageWindowing is merged into visage as an OBJECT library (see top-level
+# CMakeLists.txt), so its own link libraries never reach an install(EXPORT) -
+# forward the real (non-target-local) link requirements up to visage itself.
+set(VISAGE_WINDOWING_PRIVATE_LIBS ${X11_LIBS} ${WIN_LIBS} PARENT_SCOPE)
+
 set_target_properties(VisageWindowing PROPERTIES FOLDER "visage")
 if (APPLE)
   target_compile_options(VisageWindowing PRIVATE -fobjc-arc)

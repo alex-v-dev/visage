@@ -53,31 +53,33 @@ namespace visage {
     return total_size;
   }
 
-  void setUniformDimensions(int width, int height);
-  void setOriginFlipUniform(bool origin_flip);
-  void setBlendMode(BlendMode draw_state);
+  VISAGE_EXPORT void setUniformDimensions(int width, int height);
+  VISAGE_EXPORT void setOriginFlipUniform(bool origin_flip);
+  VISAGE_EXPORT void setBlendMode(BlendMode draw_state);
 
-  bool initTransientQuadBuffers(int num_quads, const bgfx::VertexLayout& layout,
-                                bgfx::TransientVertexBuffer* vertex_buffer,
-                                bgfx::TransientIndexBuffer* index_buffer);
-  uint8_t* initQuadVerticesWithLayout(int num_quads, const bgfx::VertexLayout& layout);
+  VISAGE_EXPORT bool initTransientQuadBuffers(int num_quads, const bgfx::VertexLayout& layout,
+                                              bgfx::TransientVertexBuffer* vertex_buffer,
+                                              bgfx::TransientIndexBuffer* index_buffer);
+  VISAGE_EXPORT uint8_t* initQuadVerticesWithLayout(int num_quads, const bgfx::VertexLayout& layout);
   template<typename T>
   T* initQuadVertices(int num_quads) {
     return reinterpret_cast<T*>(initQuadVerticesWithLayout(num_quads, T::layout()));
   }
 
-  void submitShapes(const Layer& layer, const EmbeddedFile& vertex_shader,
-                    const EmbeddedFile& fragment_shader, bool radial_gradient, int submit_pass);
+  VISAGE_EXPORT void submitShapes(const Layer& layer, const EmbeddedFile& vertex_shader,
+                                  const EmbeddedFile& fragment_shader, bool radial_gradient,
+                                  int submit_pass);
 
-  void setImageAtlasUniform(const BatchVector<ImageWrapper>& batches);
-  void setGraphDataUniform(const BatchVector<GraphLineWrapper>& batches);
-  void setGraphDataUniform(const BatchVector<GraphFillWrapper>& batches);
-  void setHeatMapDataUniform(const BatchVector<HeatMapWrapper>& batches);
-  void setPathDataUniform(const BatchVector<PathFillWrapper>& batches);
+  VISAGE_EXPORT void setImageAtlasUniform(const BatchVector<ImageWrapper>& batches);
+  VISAGE_EXPORT void setGraphDataUniform(const BatchVector<GraphLineWrapper>& batches);
+  VISAGE_EXPORT void setGraphDataUniform(const BatchVector<GraphFillWrapper>& batches);
+  VISAGE_EXPORT void setHeatMapDataUniform(const BatchVector<HeatMapWrapper>& batches);
+  VISAGE_EXPORT void setPathDataUniform(const BatchVector<PathFillWrapper>& batches);
 
-  void submitText(const BatchVector<TextBlock>& batches, const Layer& layer, int submit_pass);
-  void submitShader(const BatchVector<ShaderWrapper>& batches, const Layer& layer, int submit_pass);
-  void submitSampleRegions(const BatchVector<SampleRegion>& batches, const Layer& layer, int submit_pass);
+  VISAGE_EXPORT void submitText(const BatchVector<TextBlock>& batches, const Layer& layer, int submit_pass);
+  VISAGE_EXPORT void submitShader(const BatchVector<ShaderWrapper>& batches, const Layer& layer, int submit_pass);
+  VISAGE_EXPORT void submitSampleRegions(const BatchVector<SampleRegion>& batches, const Layer& layer,
+                                         int submit_pass);
 
   template<typename V>
   struct QuadVertices {
@@ -210,7 +212,7 @@ namespace visage {
     int y = 0;
   };
 
-  class SubmitBatch {
+  class VISAGE_EXPORT SubmitBatch {
   public:
     explicit SubmitBatch(BlendMode blend_mode) : blend_mode_(blend_mode) { }
     virtual ~SubmitBatch() = default;

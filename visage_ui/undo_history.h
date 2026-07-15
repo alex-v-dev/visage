@@ -21,12 +21,14 @@
 
 #pragma once
 
+#include "visage_utils/defines.h"
+
 #include <deque>
 #include <functional>
 #include <memory>
 
 namespace visage {
-  class UndoableAction {
+  class VISAGE_EXPORT UndoableAction {
   public:
     virtual void undo() = 0;
     virtual void redo() = 0;
@@ -44,7 +46,7 @@ namespace visage {
     std::function<void()> setup_ = nullptr;
   };
 
-  class LambdaAction : public UndoableAction {
+  class VISAGE_EXPORT LambdaAction : public UndoableAction {
   public:
     LambdaAction(std::function<void()> undo_action, std::function<void()> redo_action) :
         undo_action_(std::move(undo_action)), redo_action_(std::move(redo_action)) { }
@@ -57,11 +59,11 @@ namespace visage {
     std::function<void()> redo_action_;
   };
 
-  class UndoHistory {
+  class VISAGE_EXPORT UndoHistory {
   public:
     static constexpr int kMaxUndoHistory = 1000;
 
-    class Listener {
+    class VISAGE_EXPORT Listener {
     public:
       virtual ~Listener() = default;
       virtual void undoPerformed() = 0;
@@ -70,6 +72,8 @@ namespace visage {
     };
 
     UndoHistory() = default;
+    UndoHistory(const UndoHistory&) = delete;
+    UndoHistory& operator=(const UndoHistory&) = delete;
 
     void push(std::unique_ptr<UndoableAction> action);
     void undo();

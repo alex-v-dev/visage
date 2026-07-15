@@ -22,12 +22,13 @@
 #pragma once
 
 #include <functional>
+#include <visage_utils/defines.h>
 #include <visage_utils/dimension.h>
 #include <visage_utils/space.h>
 
 namespace visage {
 
-  class Layout {
+  class VISAGE_EXPORT Layout {
   public:
     enum class ItemAlignment {
       NotSet,

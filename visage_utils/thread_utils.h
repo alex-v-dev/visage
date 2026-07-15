@@ -31,7 +31,7 @@
 #include <thread>
 
 namespace visage {
-  class Thread {
+  class VISAGE_EXPORT Thread {
   public:
     static inline std::thread::id main_thread_id_;
     static inline bool main_thread_set_ = false;

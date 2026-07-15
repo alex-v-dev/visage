@@ -1,0 +1,7 @@
+CompileFlags:
+  CompilationDatabase: "build"
+  Add:
+    - "--compile-commands-dir=build"
+Diagnostics:
+  MissingIncludes: Strict
+  UnusedIncludes: Strict

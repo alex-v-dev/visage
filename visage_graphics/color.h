@@ -30,7 +30,7 @@
 #include <string>
 
 namespace visage {
-  class Color {
+  class VISAGE_EXPORT Color {
   public:
     enum {
       kBlue,

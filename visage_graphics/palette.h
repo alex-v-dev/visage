@@ -28,7 +28,7 @@
 #include <vector>
 
 namespace visage {
-  class Palette {
+  class VISAGE_EXPORT Palette {
   public:
     static constexpr int kInvalidId = -2;
     static constexpr unsigned int kInvalidColor = 0xffff00ff;

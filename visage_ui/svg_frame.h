@@ -25,7 +25,7 @@
 #include "visage_file_embed/embedded_file.h"
 
 namespace visage {
-  class SvgFrame : public Frame {
+  class VISAGE_EXPORT SvgFrame : public Frame {
   public:
     SvgFrame() { setIgnoresMouseEvents(true, false); }
 

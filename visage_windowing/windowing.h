@@ -34,7 +34,7 @@
 #include <vector>
 
 namespace visage {
-  class Window {
+  class VISAGE_EXPORT Window {
   public:
     static constexpr float kDefaultDpi = 96.0f;
 
@@ -47,7 +47,7 @@ namespace visage {
     static void setDoubleClickSpeed(int ms) { double_click_speed_ = ms; }
     static int doubleClickSpeed() { return double_click_speed_; }
 
-    class EventHandler {
+    class VISAGE_EXPORT EventHandler {
     public:
       virtual ~EventHandler() = default;
 
@@ -208,28 +208,28 @@ namespace visage {
     VISAGE_LEAK_CHECKER(Window)
   };
 
-  void setCursorStyle(MouseCursor style);
-  void setCursorVisible(bool visible);
-  Point cursorPosition();
-  void setCursorPosition(Point window_position);
-  void setCursorScreenPosition(Point screen_position);
-  bool isMobileDevice();
-  void showMessageBox(std::string title, std::string message);
-  std::string readClipboardText();
-  void setClipboardText(const std::string& text);
+  VISAGE_EXPORT void setCursorStyle(MouseCursor style);
+  VISAGE_EXPORT void setCursorVisible(bool visible);
+  VISAGE_EXPORT Point cursorPosition();
+  VISAGE_EXPORT void setCursorPosition(Point window_position);
+  VISAGE_EXPORT void setCursorScreenPosition(Point screen_position);
+  VISAGE_EXPORT bool isMobileDevice();
+  VISAGE_EXPORT void showMessageBox(std::string title, std::string message);
+  VISAGE_EXPORT std::string readClipboardText();
+  VISAGE_EXPORT void setClipboardText(const std::string& text);
 
-  int doubleClickSpeed();
-  void setDoubleClickSpeed(int ms);
+  VISAGE_EXPORT int doubleClickSpeed();
+  VISAGE_EXPORT void setDoubleClickSpeed(int ms);
 
-  float defaultDpiScale();
-  IBounds computeWindowBounds(const Dimension& x, const Dimension& y, const Dimension& width,
-                              const Dimension& height);
+  VISAGE_EXPORT float defaultDpiScale();
+  VISAGE_EXPORT IBounds computeWindowBounds(const Dimension& x, const Dimension& y,
+                                            const Dimension& width, const Dimension& height);
 
-  std::unique_ptr<Window> createWindow(const Dimension& x, const Dimension& y,
-                                       const Dimension& width, const Dimension& height,
-                                       Window::Decoration decoration_style = Window::Decoration::Native);
-  std::unique_ptr<Window> createPluginWindow(const Dimension& width, const Dimension& height,
-                                             void* parent_handle);
+  VISAGE_EXPORT std::unique_ptr<Window> createWindow(const Dimension& x, const Dimension& y,
+                                                      const Dimension& width, const Dimension& height,
+                                                      Window::Decoration decoration_style = Window::Decoration::Native);
+  VISAGE_EXPORT std::unique_ptr<Window> createPluginWindow(const Dimension& width,
+                                                           const Dimension& height, void* parent_handle);
 
   inline std::unique_ptr<Window> createWindow(const Dimension& width, const Dimension& height,
                                               Window::Decoration decoration_style = Window::Decoration::Native) {
@@ -240,5 +240,5 @@ namespace visage {
     return computeWindowBounds({}, {}, width, height);
   }
 
-  void closeApplication();
+  VISAGE_EXPORT void closeApplication();
 }

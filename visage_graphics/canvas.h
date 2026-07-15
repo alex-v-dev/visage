@@ -41,7 +41,7 @@ namespace visage {
   class Palette;
   class Shader;
 
-  class Canvas {
+  class VISAGE_EXPORT Canvas {
   public:
     static constexpr float kDefaultSquirclePower = 4.0f;
 

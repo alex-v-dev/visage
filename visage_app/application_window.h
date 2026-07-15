@@ -27,7 +27,7 @@
 
 namespace visage {
 
-  class ApplicationWindow : public ApplicationEditor {
+  class VISAGE_EXPORT ApplicationWindow : public ApplicationEditor {
   public:
     ApplicationWindow();
     ~ApplicationWindow() override;

@@ -28,7 +28,7 @@
 namespace visage {
   class Frame;
 
-  class WindowEventHandler : public Window::EventHandler {
+  class VISAGE_EXPORT WindowEventHandler : public Window::EventHandler {
   public:
     WindowEventHandler() = delete;
     WindowEventHandler(const WindowEventHandler&) = delete;

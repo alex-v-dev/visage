@@ -81,7 +81,7 @@ namespace visage {
     int bottom;
   };
 
-  class AtlasPacker {
+  class VISAGE_EXPORT AtlasPacker {
   public:
     AtlasPacker();
     ~AtlasPacker();
@@ -215,7 +215,7 @@ namespace visage {
     std::map<T, int> lookup_;
   };
 
-  struct UvVertex {
+  struct VISAGE_EXPORT UvVertex {
     float x;
     float y;
     float u;
@@ -224,7 +224,7 @@ namespace visage {
     static bgfx::VertexLayout& layout();
   };
 
-  struct PathVertex {
+  struct VISAGE_EXPORT PathVertex {
     float index;
     float direction;
     float x1;
@@ -258,7 +258,7 @@ namespace visage {
     float* position2() { return &coefficient1; }
   };
 
-  struct ShapeVertex {
+  struct VISAGE_EXPORT ShapeVertex {
     float x;
     float y;
     float garbage1;
@@ -281,7 +281,7 @@ namespace visage {
     static bgfx::VertexLayout& layout();
   };
 
-  struct ComplexShapeVertex {
+  struct VISAGE_EXPORT ComplexShapeVertex {
     float x;
     float y;
     float garbage1;
@@ -308,7 +308,7 @@ namespace visage {
     static bgfx::VertexLayout& layout();
   };
 
-  struct TextureVertex {
+  struct VISAGE_EXPORT TextureVertex {
     float x;
     float y;
     float dimension_x;
@@ -327,7 +327,7 @@ namespace visage {
     static bgfx::VertexLayout& layout();
   };
 
-  struct PostEffectVertex {
+  struct VISAGE_EXPORT PostEffectVertex {
     float x;
     float y;
     float dimension_x;

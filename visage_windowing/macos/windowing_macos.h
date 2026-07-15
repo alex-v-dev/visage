@@ -63,7 +63,7 @@ namespace visage {
 @end
 
 namespace visage {
-  class WindowMac : public Window {
+  class VISAGE_EXPORT WindowMac : public Window {
   public:
     WindowMac(int x, int y, int width, int height, float scale, Decoration decoration);
     WindowMac(int width, int height, float scale, void* parent_handle);

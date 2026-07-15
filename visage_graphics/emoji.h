@@ -21,12 +21,14 @@
 
 #pragma once
 
+#include "visage_utils/defines.h"
+
 #include <memory>
 
 namespace visage {
   class EmojiRasterizerImpl;
 
-  class EmojiRasterizer {
+  class VISAGE_EXPORT EmojiRasterizer {
   public:
     static EmojiRasterizer& instance() {
       static EmojiRasterizer instance;

@@ -25,7 +25,7 @@
 #include "visage_ui/frame.h"
 
 namespace visage {
-  class HeatMap : public Frame {
+  class VISAGE_EXPORT HeatMap : public Frame {
   public:
     HeatMap();
     HeatMap(int width, int height);

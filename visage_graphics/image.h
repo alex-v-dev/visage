@@ -51,7 +51,7 @@ namespace visage {
     }
   };
 
-  class GraphData {
+  class VISAGE_EXPORT GraphData {
   public:
     GraphData(int num_points = 0) : num_points_(num_points), y_values_(num_points, 0.0f) { }
 
@@ -81,7 +81,7 @@ namespace visage {
     std::vector<float> y_values_;
   };
 
-  class HeatMapData {
+  class VISAGE_EXPORT HeatMapData {
   public:
     HeatMapData(int width = 0, int height = 0) :
         width_(width), height_(height), values_(width * height, 0.0f) { }
@@ -159,7 +159,7 @@ namespace visage {
 
   class ImageAtlasTexture;
 
-  class ImageAtlas {
+  class VISAGE_EXPORT ImageAtlas {
   public:
     static constexpr int kImageBuffer = 1;
 

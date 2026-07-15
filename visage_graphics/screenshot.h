@@ -28,7 +28,7 @@
 #include <vector>
 
 namespace visage {
-  class Screenshot {
+  class VISAGE_EXPORT Screenshot {
   public:
     Screenshot() = default;
     Screenshot(const uint8_t* data, int width, int height, bool blue_red = false) :

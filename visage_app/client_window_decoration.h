@@ -25,7 +25,7 @@
 #include "visage_ui/frame.h"
 
 namespace visage {
-  class ClientDecoratorButton : public Frame {
+  class VISAGE_EXPORT ClientDecoratorButton : public Frame {
   public:
     static constexpr int kDefaultHoverColor = 0x88888888;
 
@@ -63,7 +63,7 @@ namespace visage {
     Color color_;
   };
 
-  class ClientWindowDecoration : public Frame {
+  class VISAGE_EXPORT ClientWindowDecoration : public Frame {
   public:
     static constexpr int kButtonWidth = 46;
     static constexpr int kButtonHeight = 28;

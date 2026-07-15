@@ -24,7 +24,7 @@
 #include "visage_ui/frame.h"
 
 namespace visage {
-  class BarList : public Frame {
+  class VISAGE_EXPORT BarList : public Frame {
   public:
     VISAGE_THEME_DEFINE_COLOR(BarColor);
 
